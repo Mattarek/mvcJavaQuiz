@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class QuizController {
+	private static final int examQuestionCount = 20;
 	private final QuizService quizService;
 
 	public QuizController(final QuizService quizService) {
@@ -32,6 +33,12 @@ public class QuizController {
 	public String allQuestion(final Model model) {
 		model.addAttribute("questions", quizService.getQuestions());
 		return "allquestions";
+	}
+
+	@GetMapping("/exam")
+	public String twentyQuestion(final Model model) {
+		model.addAttribute("questions", quizService.getCustomValueOfQuestions(examQuestionCount));
+		return "exam";
 	}
 
 	@PostMapping("/check")

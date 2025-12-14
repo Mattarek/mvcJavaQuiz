@@ -3,11 +3,14 @@ package com.example.service;
 import com.example.dto.AnswerDto;
 import com.example.dto.CheckAnswerResult;
 import com.example.dto.QuestionDto;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Service
 public class QuizService {
@@ -76,5 +79,19 @@ public class QuizService {
 	private QuestionDto getRandomQuestion() {
 		final List<QuestionDto> all = getQuestions();
 		return all.get(new Random().nextInt(all.size()));
+	}
+
+	public @Nullable List<QuestionDto> getCustomValueOfQuestions(final int count) {
+		final List<QuestionDto> all = getQuestions();
+		final Random random = new Random();
+		final Set<Integer> indexes = new HashSet<>();
+
+		while (indexes.size() < Math.min(count, all.size())) {
+			indexes.add(random.nextInt(all.size()));
+		}
+
+		return indexes.stream()
+				.map(all::get)
+				.toList();
 	}
 }
