@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.connector.QuestionClient;
 import com.example.dto.AnswerDto;
 import com.example.dto.CheckAnswerResult;
 import com.example.dto.QuestionDto;
@@ -19,6 +20,7 @@ public class QuizService {
 			"https://public.andret.eu/questions.json";
 
 	private final RestTemplate restTemplate;
+	private final QuestionClient questionClient;
 
 	// cache pytań
 	private List<QuestionDto> questions;
@@ -26,8 +28,9 @@ public class QuizService {
 	// aktualne pytanie
 	private QuestionDto currentQuestion;
 
-	public QuizService(final RestTemplate restTemplate) {
+	public QuizService(final RestTemplate restTemplate, final QuestionClient questionClient) {
 		this.restTemplate = restTemplate;
+		this.questionClient = questionClient;
 	}
 
 	public QuestionDto getQuestion() {
@@ -65,15 +68,7 @@ public class QuizService {
 	}
 
 	public List<QuestionDto> getQuestions() {
-		if (questions == null) {
-			final QuestionDto[] response =
-					restTemplate.getForObject(
-							QUESTIONS_URL,
-							QuestionDto[].class
-					);
-			questions = List.of(response);
-		}
-		return questions;
+		return List.of(questionClient.getQuestions(QUESTIONS_URL));
 	}
 
 	private QuestionDto getRandomQuestion() {

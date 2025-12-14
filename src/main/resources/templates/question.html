@@ -63,25 +63,51 @@
         .next:hover {
             text-decoration: underline;
         }
+
+        .back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #1976d2;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .quiz-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 80px; /* żeby nie nachodziło na przycisk */
+        }
+
     </style>
 </head>
 
 <body>
 
-<div class="quiz-box">
+<a class="back" th:href="@{/}">⬅ Powrót do menu</a>
 
-    <h2 th:text="${question.text}"></h2>
+<div class="quiz-container">
+    <div class="quiz-box">
 
-    <button class="answer"
-            onclick="check(this)"
-            th:attr="data-index=${iter.index}"
-            th:each="a, iter : ${question.answers}"
-            th:text="${a.text}">
-    </button>
+        <h2 th:text="${question.text}"></h2>
 
-    <a class="next" th:href="@{/question}">➡️ Następne pytanie</a>
+        <button class="answer"
+                onclick="check(this)"
+                th:attr="data-index=${iter.index}"
+                th:each="a, iter : ${question.answers}"
+                th:text="${a.text}">
+        </button>
 
+        <a class="next" th:href="@{/question}">➡️ Następne pytanie</a>
+
+    </div>
 </div>
+
 
 <script>
     function check(btn) {

@@ -36,7 +36,7 @@ public class QuizController {
 	}
 
 	@GetMapping("/exam")
-	public String twentyQuestion(final Model model) {
+	public String exam(final Model model) {
 		model.addAttribute("questions", quizService.getCustomValueOfQuestions(examQuestionCount));
 		return "exam";
 	}
