@@ -16,9 +16,6 @@ import java.util.Set;
 @Service
 public class QuizService {
 
-	private static final String QUESTIONS_URL =
-			"https://public.andret.eu/questions.json";
-
 	private final RestTemplate restTemplate;
 	private final QuestionClient questionClient;
 
@@ -68,7 +65,7 @@ public class QuizService {
 	}
 
 	public List<QuestionDto> getQuestions() {
-		return List.of(questionClient.getQuestions(QUESTIONS_URL));
+		return List.of(questionClient.getQuestions());
 	}
 
 	private QuestionDto getRandomQuestion() {
