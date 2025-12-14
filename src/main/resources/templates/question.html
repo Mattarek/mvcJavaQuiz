@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .quiz-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 420px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .answer {
+            width: 100%;
+            display: block;
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+            background: #fff;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .answer:hover:not(:disabled) {
+            background: #f0f0f0;
+        }
+
+        .answer:disabled {
+            cursor: default;
+            opacity: 0.95;
+        }
+
+        .next {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .next:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+
+    <h2 th:text="${question.text}"></h2>
+
+    <button class="answer"
+            onclick="check(this)"
+            th:attr="data-index=${iter.index}"
+            th:each="a, iter : ${question.answers}"
+            th:text="${a.text}">
+    </button>
+
+    <a class="next" th:href="@{/question}">➡️ Następne pytanie</a>
+
+</div>
+
+<script>
+    function check(btn) {
+
+        const selectedIndex = parseInt(btn.dataset.index);
+
+        fetch('/check', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'answerIndex=' + selectedIndex
+        })
+            .then(r => r.json())
+            .then(result => {
+
+                const buttons = document.querySelectorAll('.answer');
+
+                buttons.forEach((b, i) => {
+
+                    // poprawna odpowiedź
+                    if (i === result.correctIndex) {
+                        b.style.border = '3px solid green';
+                        b.style.background = '#e8f5e9';
+                    }
+                    // kliknięta, ale błędna
+                    else if (i === selectedIndex) {
+                        b.style.border = '3px solid #999';
+                        b.style.background = '#eeeeee';
+                    }
+                    // pozostałe błędne
+                    else {
+                        b.style.border = '3px solid red';
+                        b.style.background = '#fdecea';
+                    }
+
+                    b.disabled = true;
+                });
+            });
+    }
+</script>
+
+</body>
+</html>

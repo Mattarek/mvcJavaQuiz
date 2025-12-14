@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wszystkie pytania – Java Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .controls button {
+            margin-right: 10px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .filter {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .reset {
+            background: #1976d2;
+            color: white;
+        }
+
+        .question {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .meta {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .answers button {
+            display: block;
+            width: 100%;
+            margin: 6px 0;
+            padding: 10px;
+            border-radius: 6px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            background: white;
+        }
+
+        .correct {
+            border: 3px solid green !important;
+            background: #e8f5e9;
+        }
+
+        .wrong {
+            border: 3px solid red !important;
+            background: #fdecea;
+        }
+
+        .selected {
+            border: 3px solid #999 !important;
+            background: #eeeeee;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #1976d2;
+        }
+    </style>
+</head>
+
+<body>
+
+<a class="back" th:href="@{/}">⬅ Powrót do menu</a>
+
+<h1>📚 Wszystkie pytania</h1>
+
+<!-- ===== PANEL ===== -->
+<div class="controls">
+    <strong>Poprawne:</strong> <span id="correctCount">0</span> |
+    <strong>Błędne:</strong> <span id="wrongCount">0</span>
+
+    <br><br>
+
+    <button class="filter" onclick="showOnlyWrong()">🧹 Pokaż tylko błędne pytania</button>
+    <button class="reset" onclick="resetView()">🔄 Reset</button>
+</div>
+
+<!-- ===== PYTANIA ===== -->
+<div class="question" th:each="q, qi : ${questions}">
+
+    <h3 th:text="${q.text}"></h3>
+
+    <div class="meta">
+        Poziom: <span th:text="${q.advancement}"></span> |
+        Kategoria: <span th:text="${q.category}"></span>
+    </div>
+
+    <div class="answers">
+        <button
+                onclick="checkAnswer(this)"
+                th:data-correct="${a.correct}"
+                th:each="a, ai : ${q.answers}"
+                th:text="${a.text}">
+        </button>
+    </div>
+
+</div>
+
+<!-- ===== JS ===== -->
+<script>
+    function checkAnswer(btn) {
+
+        const answers = btn.closest('.answers').querySelectorAll('button');
+        let hasWrong = false;
+
+        answers.forEach(b => {
+            const correct = b.dataset.correct === 'true';
+
+            if (b === btn && !correct) {
+                b.classList.add('selected');
+                hasWrong = true;
+            }
+
+            if (correct) {
+                b.classList.add('correct');
+            } else {
+                b.classList.add('wrong');
+            }
+
+            b.disabled = true;
+        });
+
+        updateCounters();
+    }
+
+    function updateCounters() {
+        const correct = document.querySelectorAll('.correct').length;
+        const wrong = document.querySelectorAll('.selected').length;
+
+        document.getElementById('correctCount').innerText = correct;
+        document.getElementById('wrongCount').innerText = wrong;
+    }
+
+    function showOnlyWrong() {
+        document.querySelectorAll('.question').forEach(q => {
+            const wrongSelected = q.querySelector('.selected');
+            if (!wrongSelected) {
+                q.style.display = 'none';
+            }
+        });
+    }
+
+    function resetView() {
+        document.querySelectorAll('.question').forEach(q => {
+            q.style.display = 'block';
+
+            q.querySelectorAll('button').forEach(b => {
+                b.className = '';
+                b.disabled = false;
+            });
+        });
+
+        document.getElementById('correctCount').innerText = 0;
+        document.getElementById('wrongCount').innerText = 0;
+    }
+</script>
+
+</body>
+</html>

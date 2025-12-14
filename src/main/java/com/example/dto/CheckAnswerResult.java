@@ -1,4 +1,6 @@
 package com.example.dto;
 
-public class CheckAnswerResult {
-}
+public record CheckAnswerResult(
+		int correctIndex,
+		boolean selectedCorrect
+) {}
