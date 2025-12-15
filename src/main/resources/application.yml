@@ -16,4 +16,4 @@ spring:
 
 question:
   api:
-    url: https://public.andr
+    url: https://public.andret.eu/questions.json
