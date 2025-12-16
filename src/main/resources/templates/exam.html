@@ -116,7 +116,22 @@
 
 <a class="back" th:href="@{/}">⬅ Powrót do menu</a>
 
-<h1>📚 Wszystkie pytania</h1>
+<h1>📚 Egzamin</h1>
+
+<div th:if="${session.LOGIN == null}">
+    <h3>👤 Podaj login</h3>
+
+    <form method="post" th:action="@{/exam/start}">
+        <input
+                name="login"
+                placeholder="Twój login"
+                required
+                type="text"
+        />
+        <br><br>
+        <button type="submit">▶ Start</button>
+    </form>
+</div>
 
 <!-- ===== PANEL ===== -->
 <div class="controls">
@@ -125,6 +140,13 @@
 
     <br><br>
 
+    <div style="margin-bottom:20px;" th:if="${session.LOGIN != null}">
+        <span>👤 <b th:text="${session.LOGIN}"></b></span>
+        |
+        <a style="color:red; font-weight:bold;" th:href="@{/exam/logout}">
+            🚪 Wyloguj
+        </a>
+    </div>
     <button class="filter" onclick="showOnlyWrong()">🧹 Pokaż tylko błędne pytania</button>
     <button class="reset" onclick="resetView()">🔄 Reset</button>
     <button class="reset" onclick="reroll()">🎲 Losuj ponownie</button>
@@ -132,25 +154,29 @@
 </div>
 
 <!-- ===== PYTANIA ===== -->
-<div class="question" th:each="q, qi : ${questions}">
+<div th:if="${session.LOGIN != null}">
+    <div class="question" th:each="q, qi : ${questions}">
 
-    <h3 th:text="${q.text}"></h3>
+        <h3 th:text="${q.text}"></h3>
 
-    <div class="meta">
-        Poziom: <span th:text="${q.advancement}"></span> |
-        Kategoria: <span th:text="${q.category}"></span>
-    </div>
+        <div class="meta">
+            Poziom: <span th:text="${q.advancement}"></span> |
+            Kategoria: <span th:text="${q.category}"></span>
+        </div>
 
-    <div class="answers">
-        <button
-                onclick="checkAnswer(this)"
-                th:data-correct="${a.correct}"
-                th:each="a, ai : ${q.answers}"
-                th:text="${a.text}">
-        </button>
+        <div class="answers">
+            <button
+                    onclick="checkAnswer(this)"
+                    th:data-correct="${a.correct}"
+                    th:each="a, ai : ${q.answers}"
+                    th:text="${a.text}">
+            </button>
+        </div>
+
     </div>
 
 </div>
+
 
 <!-- ===== JS ===== -->
 <script>

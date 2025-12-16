@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.CheckAnswerResult;
 import com.example.service.QuizService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,12 @@ public class QuizController {
 		return "question";
 	}
 
+	@GetMapping("/exam/logout")
+	public String logout(final HttpSession httpSession) {
+		httpSession.invalidate();
+		return "redirect:/exam";
+	}
+
 	@GetMapping("/allquestions")
 	public String allQuestion(final Model model) {
 		model.addAttribute("questions", quizService.getQuestions());
@@ -39,6 +46,12 @@ public class QuizController {
 	public String exam(final Model model) {
 		model.addAttribute("questions", quizService.getCustomValueOfQuestions(examQuestionCount));
 		return "exam";
+	}
+
+	@PostMapping("/exam/start")
+	public String startQuiz(@RequestParam final String login, final HttpSession httpSession) {
+		httpSession.setAttribute("LOGIN", login);
+		return "redirect:/exam";
 	}
 
 	@PostMapping("/check")
