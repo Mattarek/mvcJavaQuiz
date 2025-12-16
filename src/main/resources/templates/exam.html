@@ -182,9 +182,6 @@
 <!-- ===== JS ===== -->
 <script>
     function sendResults(data) {
-
-        sessionStorage.setItem("quizResult", JSON.stringify(data));
-
         fetch('/exam/finish', {
             method: 'POST',
             headers: {
