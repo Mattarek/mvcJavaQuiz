@@ -167,6 +167,7 @@
         <div class="answers">
             <button
                     onclick="checkAnswer(this)"
+                    th:data-answer-id="${ai.index + 1}"
                     th:data-correct="${a.correct}"
                     th:each="a, ai : ${q.answers}"
                     th:text="${a.text}">
@@ -181,6 +182,9 @@
 <!-- ===== JS ===== -->
 <script>
     function sendResults(data) {
+
+        sessionStorage.setItem("quizResult", JSON.stringify(data));
+
         fetch('/exam/finish', {
             method: 'POST',
             headers: {
@@ -192,32 +196,34 @@
         });
     }
 
-    function checkAnswer(btn) {
+    function checkAnswer(button) {
 
-        const answers = btn.closest('.answers').querySelectorAll('button');
+        const answers = button.closest('.answers')
+            .querySelectorAll('button');
 
-        let hasWrong = false;
-
-        answers.forEach(b => {
-            const correct = b.dataset.correct === 'true';
-            b.dataset.selected = "true";
-
-            if (b === btn && !correct) {
-                b.classList.add('selected');
-                hasWrong = true;
-            }
-
-            if (correct) {
-                b.classList.add('correct');
-            } else {
-                b.classList.add('wrong');
-            }
-
-            b.disabled = true;
+        // 1️⃣ reset stanu
+        answers.forEach(btn => {
+            btn.dataset.selected = "false";
+            btn.classList.remove('correct', 'wrong');
+            btn.disabled = true;
         });
 
-        updateCounters();
+        // 2️⃣ zaznacz klikniętą
+        button.dataset.selected = "true";
+
+        // 3️⃣ ZAWSZE podświetl poprawną odpowiedź
+        answers.forEach(btn => {
+            if (btn.dataset.correct === "true") {
+                btn.classList.add('correct');
+            }
+        });
+
+        // 4️⃣ jeśli kliknięta jest błędna → zaznacz ją na czerwono
+        if (button.dataset.correct !== "true") {
+            button.classList.add('wrong');
+        }
     }
+
 
     function finishQuiz() {
 
@@ -225,20 +231,22 @@
 
         document.querySelectorAll('.question').forEach(q => {
 
-            const questionId = q.dataset.questionId;
+            const questionId = Number(q.dataset.questionId);
             const selected = q.querySelector('button[data-selected="true"]');
 
             if (!selected) return;
 
+
             result.push({
-                questionId: Number(questionId),
-                selectedAnswer: selected.innerText,
+                questionId: questionId,
+                selectedAnswer: Number(selected.dataset.answerId),
                 correct: selected.dataset.correct === "true"
             });
         });
 
         sendResults(result);
     }
+
 
     function updateCounters() {
         const correct = document.querySelectorAll('.correct').length;

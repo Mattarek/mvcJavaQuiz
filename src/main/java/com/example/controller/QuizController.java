@@ -59,13 +59,11 @@ public class QuizController {
 	) {
 
 		final String login = (String) session.getAttribute("LOGIN");
-
 		final ObjectMapper mapper = new ObjectMapper();
-
 		final UserAnswers ua = new UserAnswers();
+
 		ua.setLogin(login);
 		ua.setAnswers(mapper.writeValueAsString(answers));
-
 		userAnswersRepository.save(ua);
 
 		return ResponseEntity.ok().build();
