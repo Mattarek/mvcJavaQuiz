@@ -2,6 +2,9 @@ package com.example.dto;
 
 public class AnswerDto {
 	private Long id;
+	private String text;
+	private boolean correct;
+	private String explanation;
 
 	public Long getId() {
 		return id;
@@ -10,10 +13,6 @@ public class AnswerDto {
 	public void setId(final Long id) {
 		this.id = id;
 	}
-
-	private String text;
-	private boolean correct;
-	private String explanation;
 
 	public String getText() {
 		return text;
@@ -38,10 +37,4 @@ public class AnswerDto {
 	public void setExplanation(final String explanation) {
 		this.explanation = explanation;
 	}
-
-	public record CheckAnswerResult(
-			int correctIndex,
-			boolean selectedCorrect
-	) {}
-
 }

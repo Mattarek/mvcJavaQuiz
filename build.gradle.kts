@@ -34,10 +34,10 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-databind")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-thymeleaf-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-validation-test")
+	testImplementation("org.mockito:mockito-core:5.21.0")
+	testImplementation("org.springframework.boot:spring-boot-starter-test:4.0.0")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-webmvc-test:4.0.0")
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

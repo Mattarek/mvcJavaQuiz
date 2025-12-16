@@ -23,10 +23,14 @@ public class QuizController {
 	private static final int EXAM_QUESTIONS_COUNT = 20;
 	private final QuizService quizService;
 	private final UserAnswersRepository userAnswersRepository;
+	private final ObjectMapper objectMapper;
 
-	public QuizController(final QuizService quizService, final UserAnswersRepository userAnswersRepository) {
+	public QuizController(final QuizService quizService,
+						  final UserAnswersRepository userAnswersRepository,
+						  final ObjectMapper objectMapper) {
 		this.quizService = quizService;
 		this.userAnswersRepository = userAnswersRepository;
+		this.objectMapper = objectMapper;
 	}
 
 	@GetMapping("/")
@@ -59,11 +63,10 @@ public class QuizController {
 	) {
 
 		final String login = (String) session.getAttribute("LOGIN");
-		final ObjectMapper mapper = new ObjectMapper();
 		final UserAnswers ua = new UserAnswers();
 
 		ua.setLogin(login);
-		ua.setAnswers(mapper.writeValueAsString(answers));
+		ua.setAnswers(objectMapper.writeValueAsString(answers));
 		userAnswersRepository.save(ua);
 
 		return ResponseEntity.ok().build();
