@@ -194,7 +194,6 @@
     }
 
     function checkAnswer(button) {
-
         const answers = button.closest('.answers')
             .querySelectorAll('button');
 
@@ -244,14 +243,6 @@
         sendResults(result);
     }
 
-
-    function updateCounters() {
-        const correct = document.querySelectorAll('.correct').length;
-        const wrong = document.querySelectorAll('.selected').length;
-
-        document.getElementById('correctCount').innerText = correct;
-        document.getElementById('wrongCount').innerText = wrong;
-    }
 
     function showOnlyWrong() {
         document.querySelectorAll('.question').forEach(q => {
