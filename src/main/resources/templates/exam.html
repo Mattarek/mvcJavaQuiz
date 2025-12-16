@@ -135,7 +135,7 @@
 
 <!-- ===== PANEL ===== -->
 <div class="controls">
-    <strong>Poprawne:</strong> <span id="correctCount">0</span> |
+    <strong>Ogółem:</strong> <span id="correctCount">0</span> |
     <strong>Błędne:</strong> <span id="wrongCount">0</span>
 
     <br><br>
@@ -150,12 +150,12 @@
     <button class="filter" onclick="showOnlyWrong()">🧹 Pokaż tylko błędne pytania</button>
     <button class="reset" onclick="resetView()">🔄 Reset</button>
     <button class="reset" onclick="reroll()">🎲 Losuj ponownie</button>
-
+    <button onclick="finishQuiz()">✅ Zakończ quiz</button>
 </div>
 
 <!-- ===== PYTANIA ===== -->
 <div th:if="${session.LOGIN != null}">
-    <div class="question" th:each="q, qi : ${questions}">
+    <div class="question" th:data-question-id="${q.id}" th:each="q, qi : ${questions}">
 
         <h3 th:text="${q.text}"></h3>
 
@@ -180,13 +180,27 @@
 
 <!-- ===== JS ===== -->
 <script>
+    function sendResults(data) {
+        fetch('/exam/finish', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(() => {
+            window.location.href = '/';
+        });
+    }
+
     function checkAnswer(btn) {
 
         const answers = btn.closest('.answers').querySelectorAll('button');
+
         let hasWrong = false;
 
         answers.forEach(b => {
             const correct = b.dataset.correct === 'true';
+            b.dataset.selected = "true";
 
             if (b === btn && !correct) {
                 b.classList.add('selected');
@@ -203,6 +217,27 @@
         });
 
         updateCounters();
+    }
+
+    function finishQuiz() {
+
+        const result = [];
+
+        document.querySelectorAll('.question').forEach(q => {
+
+            const questionId = q.dataset.questionId;
+            const selected = q.querySelector('button[data-selected="true"]');
+
+            if (!selected) return;
+
+            result.push({
+                questionId: Number(questionId),
+                selectedAnswer: selected.innerText,
+                correct: selected.dataset.correct === "true"
+            });
+        });
+
+        sendResults(result);
     }
 
     function updateCounters() {

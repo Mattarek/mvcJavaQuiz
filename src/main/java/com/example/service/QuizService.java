@@ -6,7 +6,6 @@ import com.example.dto.CheckAnswerResult;
 import com.example.dto.QuestionDto;
 import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.HashSet;
 import java.util.List;
@@ -16,17 +15,11 @@ import java.util.Set;
 @Service
 public class QuizService {
 
-	private final RestTemplate restTemplate;
 	private final QuestionClient questionClient;
 
-	// cache pytań
-	private List<QuestionDto> questions;
-
-	// aktualne pytanie
 	private QuestionDto currentQuestion;
 
-	public QuizService(final RestTemplate restTemplate, final QuestionClient questionClient) {
-		this.restTemplate = restTemplate;
+	public QuizService(final QuestionClient questionClient) {
 		this.questionClient = questionClient;
 	}
 
