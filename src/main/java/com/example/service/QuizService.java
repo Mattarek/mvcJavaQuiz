@@ -36,7 +36,6 @@ public class QuizService {
 	}
 
 	public CheckAnswerResult checkAnswer(final int selectedIndex) {
-
 		if (currentQuestion == null) {
 			throw new IllegalStateException("No active question");
 		}

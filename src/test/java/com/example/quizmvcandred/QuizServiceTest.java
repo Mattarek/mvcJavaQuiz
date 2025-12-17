@@ -15,7 +15,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,6 +27,36 @@ public class QuizServiceTest {
 
 	@InjectMocks
 	private QuizService quizService;
+
+	@Test
+	void shouldReturnTrueWhenCorrectAnswerSelected() {
+		// GIVEN
+		final AnswerDto a1 = answer("A", false);
+		final AnswerDto a2 = answer("B", false);
+		final AnswerDto a3 = answer("C", true);
+
+		final QuestionDto question = new QuestionDto();
+		question.setAnswers(List.of(a1, a2, a3));
+
+		// new QuestionDto[]{question} - to tworzy tablice 1 elementową z listą question { question }
+		when(questionClient.getQuestions())
+				.thenReturn(new QuestionDto[]{question});
+
+		// WHEN
+		quizService.nextQuestion();
+		final CheckAnswerResult result = quizService.checkAnswer(2);
+
+		// THEN
+		assertTrue(result.selectedCorrect());
+		assertEquals(2, result.correctIndex());
+	}
+
+	private AnswerDto answer(final String text, final boolean correct) {
+		final AnswerDto dto = new AnswerDto();
+		dto.setText(text);
+		dto.setCorrect(correct);
+		return dto;
+	}
 
 	@Test
 	void shouldReturnCorrectResultWhenAnswerIsWrong() {
@@ -61,6 +93,36 @@ public class QuizServiceTest {
 		assertThrows(
 				IllegalStateException.class,
 				() -> quizService.checkAnswer(0)
+		);
+	}
+
+	@Test
+	void shouldReturnUniqueQuestions() {
+		// GIVEN
+		//		JEŚLI:
+		//			ktoś wywoła getQuestions() na tym obiekcie
+		//		TO:
+		//			zwróć X
+
+		when(questionClient.getQuestions())
+				.thenReturn(new QuestionDto[]{
+						new QuestionDto(),
+						new QuestionDto(),
+						new QuestionDto(),
+						new QuestionDto()
+				});
+
+		// WHEN
+		// getCustomValueOfQuestions korzysta z getQuestions, więc z niego zwróci nam to co wyżej
+		// zamockowaliśmy
+		final List<QuestionDto> result = quizService.getCustomValueOfQuestions(3);
+
+		// THEN
+		assertNotNull(result);
+
+		assertEquals(
+				result.size(),
+				result.stream().distinct().count()
 		);
 	}
 }

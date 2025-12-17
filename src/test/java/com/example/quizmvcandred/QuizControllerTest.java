@@ -32,6 +32,7 @@ class QuizControllerTest {
 
 	@Autowired
 	private QuizService quizService;
+
 	@Autowired
 	private UserAnswersRepository userAnswersRepository;
 
