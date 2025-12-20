@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0"
+          name="viewport">
+    <title>JavaExam – Logowanie</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            font-family: Arial, sans-serif;
+        }
+
+        .login-box {
+            background: #ffffff;
+            padding: 32px;
+            width: 320px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .login-box h1 {
+            margin: 0 0 24px;
+            text-align: center;
+            font-size: 22px;
+            color: #1e293b;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            border: 1px solid #cbd5f5;
+            font-size: 14px;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #6366f1;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h1>Java Exam</h1>
+
+    <form action="/login" method="post">
+        <input name="username" placeholder="Login" required type="text">
+        <input name="password" placeholder="Hasło" required type="password">
+        <button type="submit">Zaloguj się</button>
+    </form>
+</div>
+
+</body>
+</html>

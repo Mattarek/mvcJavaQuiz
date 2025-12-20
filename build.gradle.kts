@@ -33,11 +33,13 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	implementation("com.fasterxml.jackson.core:jackson-databind")
 	runtimeOnly("org.postgresql:postgresql")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.mockito:mockito-core:5.21.0")
-	testImplementation("org.springframework.boot:spring-boot-starter-test:4.0.0")
+	testImplementation("org.mockito:mockito-core")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-webmvc-test:4.0.0")
+	implementation("org.springframework.boot:spring-boot-webmvc-test")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

@@ -7,6 +7,8 @@ import com.example.repository.UserAnswersRepository;
 import com.example.service.QuizService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,7 +75,8 @@ public class QuizController {
 	}
 
 	@GetMapping("/exam")
-	public String exam(final Model model) {
+	public String exam(final Model model, @AuthenticationPrincipal final UserDetails userDetails) {
+		model.addAttribute("login", userDetails.getUsername());
 		model.addAttribute("questions", quizService.getCustomValueOfQuestions(EXAM_QUESTIONS_COUNT));
 		return "exam";
 	}
@@ -82,6 +85,11 @@ public class QuizController {
 	public String startQuiz(@RequestParam final String login, final HttpSession httpSession) {
 		httpSession.setAttribute("LOGIN", login);
 		return "redirect:/exam";
+	}
+
+	@GetMapping("/login")
+	public String checkLogin() {
+		return "login";
 	}
 
 	@PostMapping("/check")
