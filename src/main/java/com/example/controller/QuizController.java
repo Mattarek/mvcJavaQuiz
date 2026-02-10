@@ -35,9 +35,14 @@ public class QuizController {
 		this.objectMapper = objectMapper;
 	}
 
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+
 	@GetMapping("/")
-	public String welcome() {
-		return "welcome";
+	public String home() {
+		return "redirect:/login";
 	}
 
 	@GetMapping("/question")
@@ -87,9 +92,9 @@ public class QuizController {
 		return "redirect:/exam";
 	}
 
-	@GetMapping("/login")
-	public String checkLogin() {
-		return "login";
+	@GetMapping("/welcome")
+	public String welcome() {
+		return "welcome";
 	}
 
 	@PostMapping("/check")

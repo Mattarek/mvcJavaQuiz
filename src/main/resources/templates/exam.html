@@ -56,6 +56,39 @@
             margin-bottom: 12px;
         }
 
+        .user-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logout-btn {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #b71c1c;
+        }
+
+
         .answers button {
             display: block;
             width: 100%;
@@ -114,22 +147,17 @@
 
 <body>
 
-<a class="back" th:href="@{/}">⬅ Powrót do menu</a>
+<a class="back" th:href="@{/welcome}">⬅ Powrót do menu</a>
 
 <h1>📚 Egzamin</h1>
 
-<div th:if="${session.LOGIN == null}">
-    <h3>👤 Podaj login</h3>
+<div class="user-panel">
+    <div class="user-info">
+        👤 <span th:text="${login}"></span>
+    </div>
 
-    <form method="post" th:action="@{/exam/start}">
-        <input
-                name="login"
-                placeholder="Twój login"
-                required
-                type="text"
-        />
-        <br><br>
-        <button type="submit">▶ Start</button>
+    <form method="post" th:action="@{/logout}">
+        <button class="logout-btn" type="submit">🚪 Wyloguj</button>
     </form>
 </div>
 
@@ -154,30 +182,25 @@
 </div>
 
 <!-- ===== PYTANIA ===== -->
-<div th:if="${session.LOGIN != null}">
-    <div class="question" th:data-question-id="${q.id}" th:each="q, qi : ${questions}">
+<div class="question" th:data-question-id="${q.id}" th:each="q, qi : ${questions}">
 
-        <h3 th:text="${q.text}"></h3>
+    <h3 th:text="${q.text}"></h3>
 
-        <div class="meta">
-            Poziom: <span th:text="${q.advancement}"></span> |
-            Kategoria: <span th:text="${q.category}"></span>
-        </div>
-
-        <div class="answers">
-            <button
-                    onclick="checkAnswer(this)"
-                    th:data-answer-id="${ai.index + 1}"
-                    th:data-correct="${a.correct}"
-                    th:each="a, ai : ${q.answers}"
-                    th:text="${a.text}">
-            </button>
-        </div>
-
+    <div class="meta">
+        Poziom: <span th:text="${q.advancement}"></span> |
+        Kategoria: <span th:text="${q.category}"></span>
     </div>
 
+    <div class="answers">
+        <button
+                onclick="checkAnswer(this)"
+                th:data-answer-id="${ai.index + 1}"
+                th:data-correct="${a.correct}"
+                th:each="a, ai : ${q.answers}"
+                th:text="${a.text}">
+        </button>
+    </div>
 </div>
-
 
 <!-- ===== JS ===== -->
 <script>
@@ -242,7 +265,6 @@
 
         sendResults(result);
     }
-
 
     function showOnlyWrong() {
         document.querySelectorAll('.question').forEach(q => {

@@ -1,4 +1,4 @@
-package com.example.repository;
+package com.example.controller;
 
 import com.example.dto.RegisterUserDto;
 import com.example.service.UserService;
@@ -25,6 +25,6 @@ public class RegisterController {
 	@PostMapping("/register")
 	public String register(final RegisterUserDto registerUserDto) {
 		userService.register(registerUserDto);
-		return "redirect:/login";
+		return "redirect:/";
 	}
 }

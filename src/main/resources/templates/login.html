@@ -47,6 +47,24 @@
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
         }
 
+        .register-link {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .register-link a {
+            color: #6366f1;
+            font-weight: bold;
+            text-decoration: none;
+            margin-left: 4px;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
         .login-box button {
             width: 100%;
             padding: 12px;
@@ -66,6 +84,12 @@
 </head>
 <body>
 
+
+<div style="color:red; text-align:center; margin-bottom:10px;" th:if="${param.error}">
+    ❌ Nieprawidłowy login lub hasło
+</div>
+
+
 <div class="login-box">
     <h1>Java Exam</h1>
 
@@ -74,6 +98,11 @@
         <input name="password" placeholder="Hasło" required type="password">
         <button type="submit">Zaloguj się</button>
     </form>
+
+    <div class="register-link">
+        Nie masz konta?
+        <a href="/register">Zarejestruj się</a>
+    </div>
 </div>
 
 </body>

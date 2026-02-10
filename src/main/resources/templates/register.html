@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0"
+          name="viewport">
+    <title>JavaExam – Rejestracja</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            font-family: Arial, sans-serif;
+        }
+
+        .register-box {
+            background: #ffffff;
+            padding: 32px;
+            width: 340px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .register-box h1 {
+            margin: 0 0 24px;
+            text-align: center;
+            font-size: 22px;
+            color: #1e293b;
+        }
+
+        .register-box input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            border-radius: 8px;
+            border: 1px solid #cbd5f5;
+            font-size: 14px;
+        }
+
+        .register-box input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .register-box button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #22c55e;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .register-box button:hover {
+            background: #16a34a;
+        }
+
+        .register-box .login-link {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .register-box .login-link a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-box .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-box">
+    <h1>Rejestracja</h1>
+
+    <form action="/register" method="post">
+        <input name="username" placeholder="Login" required>
+        <input name="password" placeholder="Hasło" required type="password">
+        <input name="confirmPassword" placeholder="Powtórz hasło" required type="password">
+
+        <button type="submit">Utwórz konto</button>
+    </form>
+
+    <div class="login-link">
+        Masz już konto?
+        <a href="/">Zaloguj się</a>
+    </div>
+</div>
+
+</body>
+</html>
